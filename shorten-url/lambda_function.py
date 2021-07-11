@@ -13,7 +13,7 @@ DEBUG = True
 def generate_random(n):
   return ''.join(random.SystemRandom().choice(string.ascii_lowercase + string.digits) for _ in range(n))
 
-def check_s3_key_available(s3_client, bucket, key):
+def is_key_available(s3_client, bucket, key):
   try:
     resp = s3_client.head_object(Bucket=bucket, Key=key)
     return False
@@ -32,7 +32,7 @@ def lambda_handler(event, context):
     key_size = int(os.environ["SHORT_KEY_SIZE"])
     short_id = generate_random(key_size)
     short_key = "url/" + short_id
-    if not(check_s3_key_available(s3, BUCKET_NAME, short_key)):
+    if is_key_available(s3, BUCKET_NAME, short_key):
       break
     else:
       print("short_key collision: " + short_key + ". Retrying.")

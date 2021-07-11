@@ -4,7 +4,7 @@ from botocore.client import Config
 
 S3_BUCKET = os.environ['S3_BUCKET']
 
-def handler(event, context):
+def lambda_handler(event, context):
   short_url = "url/" + event.get("key")
   
   s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
