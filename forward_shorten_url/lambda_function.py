@@ -4,14 +4,20 @@ from botocore.client import Config
 
 S3_BUCKET = os.environ['S3_BUCKET']
 
+
 def lambda_handler(event, context):
-  short_url = "url/" + event.get("key")
-  
-  s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
-  resp = s3.head_object(Bucket=S3_BUCKET, Key=short_url)
-  
-  redirect_url = resp.get('WebsiteRedirectLocation')
-  if redirect_url:
-    return { "redirect_url": redirect_url }
-  else:
-    return { "Error": "Unable to load redirect url for object: s3://" + S3_BUCKET + "/" + short_url }
+    print(event)
+    shorten_key = "url/" + event.get("pathParameters").get("key")
+
+    s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
+    resp = s3.head_object(Bucket=S3_BUCKET, Key=shorten_key)
+
+    redirect_url = resp.get('WebsiteRedirectLocation')
+
+    return {
+        "statusCode": 301,
+        "headers": {
+          "Location": redirect_url
+        },
+        "isBase64Encoded": False,
+    }
