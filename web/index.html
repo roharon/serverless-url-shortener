@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>단축URL 생성기</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+  <style>
+    .form {
+      text-align: center;
+      width: 400px;
+      height: 500;
+      padding-top: 120px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .title {
+      font-size: 50px;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .content {
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">단축 URL 생성 사이트</h1>
+    </div>
+  </section>
+  <div class="form">
+    <input class="input" type="text" placeholder="단축할 URL을 입력하세요. (예: https://hufs.ac.kr)">
+    <br><br><br>
+    <button id="click" class="button is-primary">생성하기</button>
+  </div>
+  <div>
+    <h2>생성된 단축 URL</h2>
+    <p id="shorten-result"></p>
+  </div>
+</body>
+
+<script>
+
+  document.getElementById('click').addEventListener('click', function () {
+    let generator_url = "https://86ys88usic.execute-api.ap-northeast-2.amazonaws.com/default/shorten-url";
+    let native_url = document.getElementsByClassName("input")[0].value;
+
+    fetch(generator_url, {
+      method: 'POST',
+      header: {
+        'Access-Control-Allow-Origin': '*',
+        'origin': 'https://hufs.live'
+      },
+      body: JSON.stringify({ native_url: native_url })
+    }).then(response => {
+      return response.json();
+    }).then(data => {
+      document.getElementById('shorten-result').innerText = data.forward_url + data.short_id
+    }).catch(err => {
+      console.log(err) 
+    })
+  });
+
+</script>
+
+</html>
