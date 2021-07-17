@@ -53,4 +53,8 @@ def lambda_handler(event, context):
         print("Error: ", e)
         short_id = None
 
-    return {"short_id": short_id, "native_url": native_url}
+    return {
+        "short_id": short_id,
+        "forward_url": os.environ['FOWARD_HOST'],
+        "native_url": native_url
+    }
