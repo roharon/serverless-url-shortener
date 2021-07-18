@@ -65,7 +65,7 @@
 <script>
 
   document.getElementById('generate-button').addEventListener('click', () => {
-    let generator_url = "https://86ys88usic.execute-api.ap-northeast-2.amazonaws.com/default/shorten-url";
+    let generator_url = "https://api.hufs.cf/shorten-url";
     let native_url = document.getElementsByClassName("input")[0].value;
 
     if (isNotValidURL(native_url)) {
