@@ -64,8 +64,9 @@
 
 <script>
 
+  let origin_endpoint = "https://hufs.me/shorten-url-generator";
+  
   document.getElementById('generate-button').addEventListener('click', () => {
-    let generator_url = "https://api.hufs.cf/shorten-url";
     let native_url = document.getElementsByClassName("input")[0].value;
 
     if (isNotValidURL(native_url)) {
@@ -74,11 +75,11 @@
       return;
     }
 
-    fetch(generator_url, {
+    fetch(origin_endpoint, {
       method: 'POST',
       header: {
         'Access-Control-Allow-Origin': '*',
-        'origin': 'https://hufs.live'
+        'origin': origin_endpoint
       },
       body: JSON.stringify({ native_url: native_url })
     }).then(response => {
@@ -89,7 +90,7 @@
       } else {
         document.getElementById("fail-card").style.display = 'none'
         document.getElementById("success-card").style.display = 'block'
-        let shorten_url = data.forward_url + data.short_id
+        let shorten_url = data.forward_url + "/" + data.short_id
         document.getElementById("result").innerHTML =
           "<a href='" + shorten_url + "'>" + shorten_url + "</a>"
       }
